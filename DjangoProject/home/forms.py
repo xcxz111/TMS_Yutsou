@@ -1,4 +1,5 @@
 from django import forms
+from home.models import Feedback
 
 
 class FeedbackForm(forms.Form):
@@ -43,4 +44,22 @@ class FeedbackForm(forms.Form):
             }
         )
     )
+
+    def clean(self):
+        has_error = False
+        if len(self.cleaned_data["message"]) < 10:
+            self.add_error("message", "A lot of size")
+            has_error = True
+        if self.cleaned_data["instagram"].lower() == "google":
+            self.add_error("instagram", "Realy?")
+            has_error = True
+        if has_error:
+            raise forms.ValidationError("Invalid form")
+        return self.cleaned_data
+
+    def save(self):
+        Feedback.objects.create(**self.cleaned_data)
+
+
+
 

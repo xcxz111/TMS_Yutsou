@@ -43,6 +43,7 @@ def contact(request):
     if request.method == "POST":
         fform = FeedbackForm(request.POST)
         if fform.is_valid():
+            fform.save()
             messages.info(request, "Ваше сообщение отправлено")
             return redirect("contact_page")
     return render(request, "contact.html", {"fform": fform, "page_tag": "contact"})

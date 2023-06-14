@@ -1,3 +1,9 @@
 from django.contrib import admin
+from home.models import Feedback
 
-# Register your models here.
+
+class AdminFeedback(admin.ModelAdmin):
+    list_display = ("username", "status", "updated")
+
+
+admin.site.register(Feedback, AdminFeedback)
